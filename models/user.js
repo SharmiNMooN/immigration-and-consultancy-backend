@@ -1,0 +1,22 @@
+const mongose = require("mongoose");
+const Schema = mongose.Schema;
+
+const userSchema = new Schema(
+  {
+    name: { type: Schema.Types.String, trim: true, required: true },
+    email: { type: Schema.Types.String, trim: true, required: true },
+    password: { type: Schema.Types.String },
+    image: { type: Schema.Types.String, trim: true },
+    status: {
+      type: Schema.Types.String,
+      enum: ["active", "inactive", "deleted"],
+      default: "active",
+    },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+);
+
+module.exports = mongose.model("users", userSchema);
