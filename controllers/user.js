@@ -37,4 +37,51 @@ module.exports = {
       });
     }
   },
+
+  loginUser: async (req, res) => {
+    try {
+      const payload = req.body;
+
+      if (!payload.email) {
+        return res.status(400).send({
+          success: false,
+          message: "validation error: Email is required ",
+        });
+      }
+
+      //find out user using email in databse
+      const user = await userModel.findOne({
+        email: payload.email,
+      });
+
+      if (!user) {
+        return res.status(400).send({
+          success: false,
+          message: "user not registered",
+        });
+      }
+
+      const token = jwt.sign(
+        {
+          email: user.email,
+          name: user.name,
+          _id: user._id,
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+          expiresIn: "2d",
+        }
+      );
+      return res.status(200).send({
+        success: true,
+        message: "User logged in succesfully",
+        data: { token },
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
 };
