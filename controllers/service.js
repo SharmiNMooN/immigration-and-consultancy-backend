@@ -1,4 +1,5 @@
 const serviceModel = require("../models/service");
+const reviewModel = require("../models/review");
 
 module.exports = {
   createService: async (req, res) => {
@@ -29,6 +30,25 @@ module.exports = {
         success: true,
         message: "Service list",
         data: result,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+
+  getService: async (req, res) => {
+    try {
+      const { serviceId } = req.params;
+
+      const service = await serviceModel.findOne({ _id: serviceId });
+      const reviews = await reviewModel.find({ serviceId });
+      return res.status(200).send({
+        success: true,
+        message: "Service details",
+        data: { service, reviews },
       });
     } catch (error) {
       return res.status(500).send({

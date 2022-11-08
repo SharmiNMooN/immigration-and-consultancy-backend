@@ -43,6 +43,18 @@ module.exports = {
       const payload = req.body;
 
       if (!payload.email) {
+        return res.status(400).send({
+          success: false,
+          message: "Email is required",
+        });
+      }
+
+      //find out user using email in databse
+      const user = await userModel.findOne({
+        email: payload.email,
+      });
+
+      if (!user) {
         const user = await userModel.create(payload);
 
         const token = jwt.sign(
@@ -60,18 +72,6 @@ module.exports = {
           success: true,
           message: "User logged in succesfully",
           data: { user, token },
-        });
-      }
-
-      //find out user using email in databse
-      const user = await userModel.findOne({
-        email: payload.email,
-      });
-
-      if (!user) {
-        return res.status(400).send({
-          success: false,
-          message: "user not registered",
         });
       }
 
