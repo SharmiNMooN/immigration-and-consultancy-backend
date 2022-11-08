@@ -95,4 +95,41 @@ module.exports = {
       });
     }
   },
+
+  deleteReview: async (req, res) => {
+    try {
+      const { reviewId, reviewerId } = req.body;
+
+      if (!reviewId || !reviewerId) {
+        return res.status(400).send({
+          success: false,
+          message: "Reviewer and Revier Id required",
+        });
+      }
+      const review = await reviewModel.findOne({
+        _id: reviewId,
+        reviewerId: reviewerId,
+      });
+      if (!review) {
+        return res.status(400).send({
+          success: false,
+          message: "Review not found, invalid review ID",
+        });
+      }
+
+      const deleted = await reviewModel.findOneAndRemove({
+        _id: review._id,
+      });
+      return res.status(200).send({
+        success: true,
+        message: "Review fetched successfully",
+        data: deleted,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
 };

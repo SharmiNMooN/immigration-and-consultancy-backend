@@ -20,4 +20,6 @@ router.patch(
   reviewController.updateReview
 );
 
+router.delete("/delete-review", verifyJWT, reviewController.deleteReview);
+
 module.exports = router;
