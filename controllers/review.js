@@ -54,4 +54,45 @@ module.exports = {
       });
     }
   },
+
+  updateReview: async (req, res) => {
+    try {
+      const { rating, description } = req.body;
+      const { reviewId } = req.params;
+
+      const review = await reviewModel.findOne({ _id: reviewId });
+      if (!review) {
+        return res.status(400).send({
+          success: false,
+          message: "Review not found, invalid review ID",
+        });
+      }
+
+      const paylaod = {};
+      if (rating) {
+        paylaod.rating = rating;
+      }
+      if (description) {
+        paylaod.description = description;
+      }
+
+      const updatedReview = await reviewModel.findOneAndUpdate(
+        { _id: review._id },
+        paylaod,
+        {
+          new: true,
+        }
+      );
+      return res.status(200).send({
+        success: true,
+        message: "Review fetched successfully",
+        data: updatedReview,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
 };
