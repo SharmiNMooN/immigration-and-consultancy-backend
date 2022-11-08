@@ -65,7 +65,7 @@ module.exports = {
         {
           email: user.email,
           name: user.name,
-          _id: user._id,
+          id: user._id,
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
@@ -75,7 +75,7 @@ module.exports = {
       return res.status(200).send({
         success: true,
         message: "User logged in succesfully",
-        data: { token },
+        data: { user, token },
       });
     } catch (error) {
       return res.status(500).send({
