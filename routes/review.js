@@ -8,11 +8,7 @@ router.get(
   "/get-review-by-service/:serviceId",
   reviewController.getReviewByService
 );
-router.get(
-  "/get-review-by-user/:userId",
-  verifyJWT,
-  reviewController.getReviewByUser
-);
+router.get("/get-review-by-user", verifyJWT, reviewController.getReviewByUser);
 
 router.patch(
   "/update-review/:reviewId",
