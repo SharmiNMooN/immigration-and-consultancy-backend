@@ -22,6 +22,13 @@ connectDB()
 
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  return res.send({
+    success: true,
+    message: "Immigration and consultancy service API",
+  });
+});
+
 app.use("/users", userRoutes);
 app.use("/services", serviceRoutes);
 app.use("/reviews", reviewRoutes);

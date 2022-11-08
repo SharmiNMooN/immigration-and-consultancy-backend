@@ -43,9 +43,23 @@ module.exports = {
       const payload = req.body;
 
       if (!payload.email) {
-        return res.status(400).send({
-          success: false,
-          message: "validation error: Email is required ",
+        const user = await userModel.create(payload);
+
+        const token = jwt.sign(
+          {
+            email: user?.email,
+            name: user?.name,
+            id: user._id,
+          },
+          process.env.ACCESS_TOKEN_SECRET,
+          {
+            expiresIn: "2d",
+          }
+        );
+        return res.status(200).send({
+          success: true,
+          message: "User logged in succesfully",
+          data: { user, token },
         });
       }
 
