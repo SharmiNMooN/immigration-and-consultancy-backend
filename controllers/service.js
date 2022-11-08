@@ -18,4 +18,23 @@ module.exports = {
       });
     }
   },
+
+  geServices: async (req, res) => {
+    try {
+      const { page = 1, limit = 3 } = req.query;
+
+      const skip = (Number(page) - 1) * Number(limit);
+      const result = await serviceModel.find().skip(skip).limit(Number(limit));
+      return res.status(200).send({
+        success: true,
+        message: "Service list",
+        data: result,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
 };
