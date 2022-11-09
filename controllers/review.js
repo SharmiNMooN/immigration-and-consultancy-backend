@@ -1,4 +1,5 @@
 const reviewModel = require("../models/review");
+const serviceModel = require("../models/service");
 const userModel = require("../models/user");
 
 module.exports = {
@@ -7,12 +8,13 @@ module.exports = {
       const payload = req.body;
 
       const user = await userModel.findOne({ _id: req.decoded.id });
+      const service = await serviceModel.findOne({ _id: payload.serviceId });
 
       payload.reviewerId = user._id;
       payload.reviewerName = user.name;
       payload.reviewerImage = user.image;
       payload.reviewerEmail = user.email;
-
+      payload.serviceName = service.name;
       const result = await reviewModel.create(payload);
       return res.status(201).send({
         success: true,
