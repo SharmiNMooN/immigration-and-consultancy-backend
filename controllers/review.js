@@ -11,6 +11,7 @@ module.exports = {
       payload.reviewerId = user._id;
       payload.reviewerName = user.name;
       payload.reviewerImage = user.image;
+      payload.reviewerEmail = user.email;
 
       const result = await reviewModel.create(payload);
       return res.status(201).send({
