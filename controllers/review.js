@@ -31,7 +31,9 @@ module.exports = {
 
   getReviewByUser: async (req, res) => {
     try {
-      const result = await reviewModel.find({ reviewerId: req.decoded.id });
+      const result = await reviewModel
+        .find({ reviewerId: req.decoded.id })
+        .sort({ createdAt: -1 });
       return res.status(200).send({
         success: true,
         message: "Review fetched successfully",
@@ -49,7 +51,9 @@ module.exports = {
     try {
       const { serviceId } = req.params;
 
-      const result = await reviewModel.find({ serviceId: serviceId });
+      const result = await reviewModel
+        .find({ serviceId: serviceId })
+        .sort({ createdAt: -1 });
       return res.status(200).send({
         success: true,
         message: "Review fetched successfully",

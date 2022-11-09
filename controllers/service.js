@@ -44,7 +44,9 @@ module.exports = {
       const { serviceId } = req.params;
 
       const service = await serviceModel.findOne({ _id: serviceId });
-      const reviews = await reviewModel.find({ serviceId });
+      const reviews = await reviewModel
+        .find({ serviceId })
+        .sort({ createdAt: -1 });
       return res.status(200).send({
         success: true,
         message: "Service details",
