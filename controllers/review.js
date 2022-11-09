@@ -1,9 +1,16 @@
 const reviewModel = require("../models/review");
+const userModel = require("../models/user");
 
 module.exports = {
   createReview: async (req, res) => {
     try {
       const payload = req.body;
+
+      const user = await userModel.findOne({ _id: req.decoded.id });
+
+      payload.reviewerId = user._id;
+      payload.reviewerName = user.name;
+      payload.reviewerImage = user.image;
 
       const result = await reviewModel.create(payload);
       return res.status(201).send({

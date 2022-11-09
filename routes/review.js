@@ -3,7 +3,7 @@ const router = express.Router();
 const reviewController = require("../controllers/review");
 const { verifyJWT } = require("../jwt");
 
-router.post("/", reviewController.createReview);
+router.post("/", verifyJWT, reviewController.createReview);
 router.get(
   "/get-review-by-service/:serviceId",
   reviewController.getReviewByService
