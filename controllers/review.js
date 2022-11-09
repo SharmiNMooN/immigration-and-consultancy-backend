@@ -106,9 +106,8 @@ module.exports = {
 
   deleteReview: async (req, res) => {
     try {
-      const { reviewId, reviewerId } = req.body;
-
-      if (!reviewId || !reviewerId) {
+      const { reviewId } = req.body;
+      if (!reviewId) {
         return res.status(400).send({
           success: false,
           message: "Reviewer and Revier Id required",
@@ -116,7 +115,7 @@ module.exports = {
       }
       const review = await reviewModel.findOne({
         _id: reviewId,
-        reviewerId: reviewerId,
+        reviewerId: req.decoded.id,
       });
       if (!review) {
         return res.status(400).send({
